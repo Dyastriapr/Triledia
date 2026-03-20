@@ -1,5 +1,7 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { 
   ArrowRight, 
   Code, 
@@ -15,10 +17,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 
-/**
- * --- NavbarLP ---
- * Navbar dengan latar belakang hitam pekat dan dropdown pada menu Layanan.
- */
+// --- Komponen NavbarLP ---
 const NavbarLP = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +29,7 @@ const NavbarLP = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Beranda', href: '#' },
+    { name: 'Beranda', href: '/' },
     { name: 'Tentang', href: '#' },
     { 
       name: 'Layanan', 
@@ -43,7 +42,6 @@ const NavbarLP = () => {
     },
     { name: 'Portfolio', href: '#' },
     { name: 'Afiliasi', href: '#' },
-    
   ];
 
   return (
@@ -53,16 +51,16 @@ const NavbarLP = () => {
         : 'py-8 border-b border-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
-        {/* Logo */}
-        <a href="/" className="text-2xl font-black tracking-tighter text-white group">
+        {/* Logo menggunakan Link */}
+        <Link href="/" className="text-2xl font-black tracking-tighter text-white group">
           TRILEDIA<span className="text-[#E1DEE7] group-hover:text-white transition-colors">.ID</span>
-        </a>
+        </Link>
         
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-10">
           {navLinks.map((link) => (
             <div key={link.name} className="relative group/nav-item">
-              <a 
+              <Link 
                 href={link.href} 
                 className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.3em] text-white/70 hover:text-white transition-all py-2"
               >
@@ -70,21 +68,21 @@ const NavbarLP = () => {
                 {link.dropdown && (
                   <ChevronDown size={12} className="group-hover/nav-item:rotate-180 transition-transform duration-300" />
                 )}
-              </a>
+              </Link>
 
               {/* Dropdown Desktop */}
               {link.dropdown && (
                 <div className="absolute top-full left-0 pt-4 opacity-0 translate-y-2 pointer-events-none group-hover/nav-item:opacity-100 group-hover/nav-item:translate-y-0 group-hover/nav-item:pointer-events-auto transition-all duration-300">
                   <div className="bg-[#161618] border border-white/10 rounded-2xl p-2 min-w-[260px] shadow-2xl overflow-hidden backdrop-blur-xl">
                     {link.dropdown.map((sub) => (
-                      <a
+                      <Link
                         key={sub.name}
                         href={sub.href}
                         className="flex items-center justify-between px-5 py-3.5 text-[10px] font-bold uppercase tracking-[0.15em] text-white/50 hover:text-white hover:bg-white/5 rounded-xl transition-all group/sub"
                       >
                         {sub.name}
                         <ExternalLink size={10} className="opacity-0 group-hover/sub:opacity-100 transition-opacity" />
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -98,7 +96,7 @@ const NavbarLP = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-white p-2" onClick={() => setIsOpen(!isOpen)} aria-label="Toggle Menu">
           {isOpen ? <X /> : <Menu />}
         </button>
       </div>
@@ -110,45 +108,38 @@ const NavbarLP = () => {
         <div className="flex flex-col items-center gap-6 w-full px-8">
           {navLinks.map((link) => (
             <div key={link.name} className="w-full text-center">
-              <a 
+              <Link 
                 href={link.href} 
                 className="text-3xl font-black text-white block mb-2"
-                onClick={link.dropdown ? undefined : () => setIsOpen(false)}
+                onClick={() => !link.dropdown && setIsOpen(false)}
               >
                 {link.name}
-              </a>
+              </Link>
               {link.dropdown && (
                 <div className="flex flex-col gap-3 py-4 mt-2 border-y border-white/5 bg-white/5 rounded-2xl">
                   {link.dropdown.map(sub => (
-                    <a 
+                    <Link 
                       key={sub.name} 
                       href={sub.href} 
                       className="text-[10px] font-bold uppercase tracking-widest text-white/40 active:text-white transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       {sub.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               )}
             </div>
           ))}
-          <button className="mt-6 bg-white text-black w-full py-5 rounded-2xl text-sm font-bold uppercase tracking-widest shadow-xl">
-            Mulai Konsultasi
-          </button>
         </div>
       </div>
     </nav>
   );
 };
 
-/**
- * --- Hero ---
- * Bagian utama dengan visual abstrak dan tagline.
- */
+// --- Komponen Hero ---
 const Hero = () => (
   <section className="relative min-h-screen bg-[#a81414] pt-48 pb-24 overflow-hidden flex items-center">
-    {/* Efek Pendaran Latar Belakang */}
     <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/10 rounded-full blur-[140px] animate-pulse" />
     <div className="absolute bottom-[10%] right-[-5%] w-[40%] h-[40%] bg-[#E1DEE7]/10 rounded-full blur-[120px]" />
 
@@ -180,7 +171,6 @@ const Hero = () => (
         </div>
       </div>
 
-      {/* Visual Samping */}
       <div className="relative hidden lg:flex justify-center items-center">
         <div className="w-full max-w-lg aspect-square bg-gradient-to-br from-white/10 to-transparent rounded-[4rem] border border-white/10 backdrop-blur-sm overflow-hidden rotate-3 relative group transition-transform duration-700 hover:rotate-0">
           <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:opacity-40 transition-opacity">
@@ -189,7 +179,6 @@ const Hero = () => (
           <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F10] via-transparent to-transparent" />
         </div>
 
-        {/* Floating Cards */}
         <div className="absolute -left-12 top-1/4 bg-white/10 backdrop-blur-xl p-6 rounded-3xl border border-white/20 shadow-2xl animate-bounce-slow">
           <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-black mb-3">
             <Code size={24} />
@@ -210,10 +199,7 @@ const Hero = () => (
   </section>
 );
 
-/**
- * --- Vision ---
- * Filosofi dan fitur utama agensi.
- */
+// --- Komponen Vision ---
 const Vision = () => (
   <section className="py-32 bg-white relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6 md:px-12 grid lg:grid-cols-2 gap-24 items-center">
@@ -242,11 +228,9 @@ const Vision = () => (
             Digital Lokal.
           </h2>
         </div>
-        
         <p className="text-zinc-600 text-lg md:text-xl leading-relaxed font-light">
           Kami percaya setiap bisnis lokal layak mendapatkan panggung digital dunia. Kami hadir untuk menjembatani ide Anda dengan eksekusi visual yang tak terlupakan.
         </p>
-
         <div className="space-y-4 pt-4">
           {[
             'Pendekatan Berbasis Data & Riset Mendalam',
@@ -266,10 +250,7 @@ const Vision = () => (
   </section>
 );
 
-/**
- * --- PartnerScroll ---
- * Animasi running text untuk branding.
- */
+// --- Komponen PartnerScroll ---
 const PartnerScroll = () => (
   <section className="bg-[#0F0F10] py-20 border-y border-white/5 overflow-hidden">
     <div className="flex gap-20 whitespace-nowrap animate-scroll opacity-40">
@@ -282,30 +263,28 @@ const PartnerScroll = () => (
   </section>
 );
 
-/**
- * --- MAIN APP ---
- */
+// --- Komponen Footer ---
+const Footer = () => (
+  <footer className="bg-[#0F0F10] py-20 border-t border-white/5">
+    <div className="max-w-7xl mx-auto px-6 text-center space-y-6">
+      <p className="text-3xl font-black text-white tracking-tighter italic">TRILEDIA.ID</p>
+      <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.4em]">© 2024 - Membangun Masa Depan Digital Anda</p>
+    </div>
+  </footer>
+);
+
+// --- Export Utama ---
 export default function App() {
   return (
     <div className="min-h-screen bg-[#0F0F10] selection:bg-[#E1DEE7] selection:text-black">
-      {/* Navbar di atas semua section */}
       <NavbarLP />
-      
       <main>
         <Hero />
         <PartnerScroll />
         <Vision />
       </main>
+      <Footer />
 
-      {/* Footer Sederhana */}
-      <footer className="bg-[#0F0F10] py-20 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-6 text-center space-y-6">
-          <p className="text-3xl font-black text-white tracking-tighter italic">TRILEDIA.ID</p>
-          <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.4em]">© 2024 - Membangun Masa Depan Digital Anda</p>
-        </div>
-      </footer>
-
-      {/* Gaya Global & Animasi */}
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
         
@@ -335,7 +314,6 @@ export default function App() {
           animation: bounce-slow 5s ease-in-out infinite;
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar {
           width: 8px;
         }
